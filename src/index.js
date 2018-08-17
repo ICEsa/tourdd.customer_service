@@ -10,6 +10,9 @@ import promiseMiddleware from 'redux-promise-middleware';
 import thunk from 'redux-thunk';
 import reducers from './redux/reducers';
 import {createStore, applyMiddleware} from 'redux'
+import Header from './Components/Theme/Header';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 var hist = createBrowserHistory();
 
 const store = createStore(
@@ -17,8 +20,9 @@ const store = createStore(
     applyMiddleware(thunk,promiseMiddleware())
 )
 
-ReactDOM.render(
-    <App />, 
+ReactDOM.render( 
+    <App />
+     ,
     document.getElementById('root')
     );
 

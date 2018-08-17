@@ -1,0 +1,114 @@
+:root{
+    --main-page-color-b1:#00a79d;
+    --main-page-color-f1:#fff;
+}
+.mdle-auto{
+    margin: 0 auto!important;
+}
+.nav-item > .btn-link {
+    font-weight: 400;
+    color: #ffffff;
+    background-color: transparent;
+}
+body{
+    background: #e7e8ea!important;
+}
+.page-header-top{
+    padding-bottom: 27px;
+    margin-bottom: -27px;
+    position: relative;
+    background-color: #fff;
+    width: 100%;
+    display: table;
+    line-height: 0;
+    content: "";
+    z-index: -9;
+   
+}
+.page-header-top > .container{
+    min-height: 88px;
+}
+.container::before,.container::after{
+    display: table;
+    line-height: 0;
+    content: "";
+}
+.nav-social::after{
+    content: '';
+    display: table;
+    clear: both;
+}
+.nav-social > li{
+    display: inline-block;
+    height: 48px;
+    width: 48px;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+.nav-social>li+li{
+    margin-left:5px
+}
+.nav-social{
+    list-style: none;
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: 0;
+    outline: 0;
+}
+.page-header-second > nav {
+    padding-left: 25px;
+}
+.page-header-second, .page-title, .products-nav .lv2 a, .product .meta, #page-footer, .get-in-touch ul li .ico, .travel-plan-header .day>span {
+    background-color: var(--main-page-color-b1);
+    color: var(--main-page-color-f1);
+    -moz-border-radius: 1rem;
+    -webkit-border-radius: 1rem;
+    border-radius: 1rem;
+}
+
+.navbar-light .navbar-nav .nav-link{
+    color:#fff!important;
+}
+.header-license{
+    margin-top: 12px;
+}
+a{
+    color: #168add;
+    text-decoration:none;
+}
+.facebook-ico{
+    background-image: url('../img/social/facebook.svg')
+}
+.instagram-ico{
+    background-image: url('../img/social/instagram.svg')
+}
+.line-ico{
+    background-image: url('../img/social/line.svg')
+}
+
+.page-logo {
+    float:left;
+}
+.social-contact {
+    float: right;
+    position: relative;
+    margin-right: 25px;
+    padding: 10px 10px 0;
+    text-align: right;
+}
+.is-brand {
+    height: 78px;
+  
+}
+
+@media (min-width: 1200px){
+.container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
+    width: 1170px;
+    }
+}
+.container{
+    margin-right: auto;
+    margin-left: auto;
+}
