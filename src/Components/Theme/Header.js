@@ -7,12 +7,13 @@ class Header extends Component {
   render() {
     return (
      <header className="page-header-top">
-        <Container fulid={true}>
+        <Container>
             <div className="page-logo" >
             <a href="http://xn--l3cah2ct3d5ab7r.com/">
             <img src={brand}  
                 className="is-brand"
                 title="ทัวร์ดีดี"
+                alt="ทัวร์ดีดี"
                 />
             </a>    
             </div>

@@ -1,19 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import {createBrowserHistory} from "history";
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import {Provider} from 'react-redux'
-import {BrowserRouter, Router, Route, Switch} from 'react-router';
+
 import promiseMiddleware from 'redux-promise-middleware';
 import thunk from 'redux-thunk';
 import reducers from './redux/reducers';
 import {createStore, applyMiddleware} from 'redux'
-import Header from './Components/Theme/Header';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-var hist = createBrowserHistory();
 
 const store = createStore(
     reducers,
@@ -21,8 +19,9 @@ const store = createStore(
 )
 
 ReactDOM.render( 
-    <App />
-     ,
+    <Provider store={store}>
+        <App />
+    </Provider>,
     document.getElementById('root')
     );
 

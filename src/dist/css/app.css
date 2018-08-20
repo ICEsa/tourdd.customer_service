@@ -1,7 +1,11 @@
+
+
 :root{
     --main-page-color-b1:#00a79d;
+    --main-page-color-ui:#a72700;
     --main-page-color-f1:#fff;
 }
+@import "animate.css";
 .mdle-auto{
     margin: 0 auto!important;
 }
@@ -12,6 +16,22 @@
 }
 body{
     background: #e7e8ea!important;
+}
+.no-border, .no-border td{
+    border: none!important
+}
+
+.text-align-center{
+    text-align: center;
+}
+.text-align-left{
+    text-align: left;
+}
+.text-align-right{
+    text-align: right;
+}
+.card{
+    margin-top:.5rem;
 }
 .page-header-top{
     padding-bottom: 27px;
