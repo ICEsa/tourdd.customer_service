@@ -10,7 +10,8 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem } from 'reactstrap';
+  DropdownItem
+} from 'reactstrap';
 
 
 
@@ -30,10 +31,10 @@ export default class Example extends React.Component {
   }
   render() {
     return (
-      
-    <header className="page-header-second container">
-        
-        <Navbar  light expand="md">
+
+      <header className="page-header-second container">
+
+        <Navbar light expand="md">
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="mdle-auto" navbar>
@@ -47,13 +48,13 @@ export default class Example extends React.Component {
                 </DropdownToggle>
                 <DropdownMenu right>
                   <DropdownItem>
-                   ทัวร์ยอดนิยม
+                    ทัวร์ยอดนิยม
                   </DropdownItem>
                   <DropdownItem>
                     ทัวร์แนะนำ
                   </DropdownItem>
                   <DropdownItem>
-                   ทัวร์ถูก
+                    ทัวร์ถูก
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
@@ -64,13 +65,13 @@ export default class Example extends React.Component {
                 </DropdownToggle>
                 <DropdownMenu right>
                   <DropdownItem>
-                   ทัวร์ยุโรป
+                    ทัวร์ยุโรป
                   </DropdownItem>
                   <DropdownItem>
                     ทัวร์เอเชีย
                   </DropdownItem>
                   <DropdownItem>
-                   ทัวร์อื่นๆ
+                    ทัวร์อื่นๆ
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
@@ -81,20 +82,20 @@ export default class Example extends React.Component {
                 <NavLink href="/components/">แบคแพ็ค</NavLink>
               </NavItem>
 
-                <UncontrolledDropdown nav inNavbar>
-                    <DropdownToggle nav caret>
-                    บทความ
+              <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle nav caret>
+                  บทความ
                     </DropdownToggle>
-                    <DropdownMenu right>
-                    <DropdownItem>
+                <DropdownMenu right>
+                  <DropdownItem>
                     ท่องเที่ยว
                     </DropdownItem>
-                    <DropdownItem>
+                  <DropdownItem>
                     โปรโมชั่น
                     </DropdownItem>
-                    </DropdownMenu>
-                </UncontrolledDropdown>
-                
+                </DropdownMenu>
+              </UncontrolledDropdown>
+
               <NavItem>
                 <NavLink href="/components/">บริการ</NavLink>
               </NavItem>
@@ -106,14 +107,14 @@ export default class Example extends React.Component {
                 <NavLink href="/components/">เข้าสู่ระบบ</NavLink>
               </NavItem>
               <NavItem>
-                     <Button color="link">
-                      <i className="fas fa-search fa-lg"></i>
-                     </Button>
+                <Button color="link">
+                  <i className="fas fa-search fa-lg"></i>
+                </Button>
               </NavItem>
             </Nav>
           </Collapse>
         </Navbar>
-    </header>
+      </header>
     );
   }
 }

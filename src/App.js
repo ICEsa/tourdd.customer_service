@@ -5,6 +5,7 @@ import {Router, Route, Switch} from 'react-router';
 import indexRoutes from './routes'
 import {createBrowserHistory} from "history";
 var hist = createBrowserHistory();
+
 class App extends Component {
   render() {
     return (

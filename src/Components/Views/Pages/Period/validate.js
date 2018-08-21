@@ -1,4 +1,6 @@
+
 const validate = values => {
+
     const errors = {}
     if (!values.firstName) {
       errors.firstName = 'ต้องการฟิลด์นี้'
@@ -20,3 +22,4 @@ const validate = values => {
   }
   
   export default validate;
+ 
