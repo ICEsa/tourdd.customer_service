@@ -5,7 +5,7 @@ import SecondPage from './Presentational/SecondPage';
 
 import { loadPeriod } from '../../../../redux/actions/periodActions'
 import { connect } from 'react-redux'
-import { promises } from 'fs';
+
 
 class Period extends Component {
   constructor(props) {

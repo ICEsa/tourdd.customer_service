@@ -1,98 +1,195 @@
 import React, { Component } from 'react'
 import validate from '../validate'
-import { Field, reduxForm, formValueSelector } from 'redux-form'
+import { formValues, FieldArray, Field, reduxForm, formValueSelector } from 'redux-form'
 import renderField from './Fields/renderField'
 import { connect } from 'react-redux'
-import { Table, Form, Card, CardBody, CardHeader, Button, Row, Col } from 'reactstrap'
-
+import { Label, FormGroup, Table, Form, Card, CardBody, CardHeader, Button, Row, Col } from 'reactstrap'
+import {createBooking} from '../../../../../redux/actions/bookingActions'
 const moment = require('moment');
 require("moment/min/locales.min");
 moment.locale('th');
 
 
 class SecondPage extends Component {
-    
-    constructor(props){
+
+    constructor(props) {
         super(props)
         this.state = {
-             pessenger:[],
-             price:[]
+            pessenger: [],
+            price: [],
+            sum: 0
         }
+        this.handleChange = this.handleChange.bind(this)
+        this.onSubmit = this.onSubmit.bind(this)
+        this.handleInitialize = this.handleInitialize.bind(this)
     }
-    periodFilter = (item) => { 
+    periodFilter = (item) => {
         const { period } = this.props
         return item === period
     }
-    componentDidMount(){
-        const {data} = this.props
+    handleChange = name => event => {
+        const { pessenger } = this.state
+        let _pessenger = [];
+        let sumary = 0;
+        pessenger.map((e, i) => {
+            if (i === name) {
+                e.count = event.target.value
+            }
+            return _pessenger = [..._pessenger, e]
+        })
+        pessenger.map((e, i) => {
+          return sumary += (e.price * e.count)
+        })
+       
+        this.setState({
+            pessenger: _pessenger,
+            sum:sumary
+        })
+       
+        
+    }
+    numberWithCommas = (x) => {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    async sleep(ms){
+        new Promise(resolve => setTimeout(resolve, ms))
+    }
+    async handleInitialize(values){
+        new Promise(resolve => this.props.initialize(resolve, values))
+    }
+    prepareSubmit(event){
+        this.handleInitialize({...event,pessenger:this.state.sumary}).then(()=>{
+            
+        })
+    }
+     onSubmit(event){
+       let data = {
+        ...event,
+        amount:this.state.sum
+       }
+       this.props.dispatch(createBooking(data)).then( ()=>{
+           
+       })
+
+
+    }
+    async componentDidMount() {
+        const { data } = this.props
         const { period } = this.props
-         let array = [];
-        {data && data.map(e=>{
-            e.plans.map(ee => {
-                if (ee.plan_id === period) {
-                    return array = ee;
-                }
+       
+        let pessenger = {};
+        let price = [];
+        {
+            data && await data.map(e => {
+                e.plans.map(ee => {
+                    if (ee.plan_id === period) {
+                        ee.plans_condition.map(eee => {
+                            return pessenger = [...pessenger, {
+                                id: eee.condition_id,
+                                name: eee.condition_name.trim(),
+                                price: parseInt(eee.condition_value) ? parseInt(eee.condition_value.trim()) : 0,
+                                count: 0
+                            }]
+
+                        })
+                    }
+                })
             })
-        })}
+        }
+        await pessenger.map(e => {
+            return price = [...price, { price: e.condition_value, Count: 0 }]
+        })
+        this.setState({
+            pessenger: pessenger,
+            price: price
+        })
     }
     render() {
-        const { data, period } = this.props
-        const {pessenger} = this.state
+        const { data, period, handleSubmit, submitting} = this.props
+        const { pessenger, price } = this.state
         return (
             <div>
+            <form onSubmit={handleSubmit(this.onSubmit)}>
                 <Card >
                     <CardHeader>
                         <i className="fas fa-paperclip" />
                         {' '}แพ็คเกจที่คุณเลือก
                     </CardHeader>
                     <CardBody>
-                        {data && data.map((e, i) => {
-                            let array = [];
-                            let condition = [];
-                            e.plans.map(ee => {
-                                if (ee.plan_id === period) {
-                                    return array = ee;
-                                }
-                            })
-                            array.plans_condition.map(item => {
-                                return condition = [...condition, 
-                                    <Row key={item.condition_id}>
+                        
+                        <Row>
+                            <Col xs="6">
+                                {data && data.map((e, i) => {
+                                    let array = [];
+                                    let condition = [];
+                                    e.plans.map(ee => {
+                                        if (ee.plan_id === period) {
+                                            return array = ee;
+                                        }
+                                    })
+                                    pessenger.map((item, index) => {
+                                        return condition = [...condition,
+                                        <Row key={item.id}>
                                         <Col xs="auto">
-                                            <Field  
-                                             name={item.condition_id}
-                                             type="number"
-                                             value={50}
-                                             component={renderField}
-                                             label={item.condition_name}/>
-                                        </Col>
-                                        <Col xs="auto">
-                                            
-                                        </Col>
-                                    </Row>,
-                                ];
-                            })
-                            return [
-                                <Row key={0}>
-                                    <Col xs="auto"><h3>{e.item_name}</h3></Col>
-                                </Row>,
-                                <Row key={2} style={{ margin: '1rem' }}>
-                                    <Col xs="auto">ช่วงเวลาเดินทาง</Col>
-                                    <Col xs="auto">{moment(array.plan_start_date).add(543, 'years').format('LL')}</Col>
-                                    <Col xs="1"><i className="fas fa-arrow-right" /></Col>
-                                    <Col xs="auto">{moment(array.plan_end_date).add(543, 'years').format('LL')}</Col>
-                                </Row>,
-                                <Row key={3}></Row>,
-                                ...condition
-                            ]
-                           
+                                            <Field
+                                                key={item.id}
+                                                name={item.name.trim()}
+                                                type="number"
+                                                onChange={this.handleChange(index)}
+                                                component={renderField}
+                                                label={item.name.trim()} />
+                                            </Col>
+                                        </Row>,
+                                        ];
+                                    })
+                                    return [
+                                        <Row key={0}>
+                                            <Col xs="auto"><h3>{e.item_name}</h3></Col>
+                                        </Row>,
+                                        <Row key={2} style={{ margin: '1rem' }}>
+                                            <Col xs="auto">ช่วงเวลาเดินทาง</Col>
+                                            <Col xs="auto">{moment(array.plan_start_date).add(543, 'years').format('LL')}</Col>
+                                            <Col xs="1"><i className="fas fa-arrow-right" /></Col>
+                                            <Col xs="auto">{moment(array.plan_end_date).add(543, 'years').format('LL')}</Col>
+                                        </Row>,
+                                        <Row key={3}></Row>,
+                                        ...condition
+                                    ]
+                                })}
+                            </Col>
 
+                            <Col xs="6" >
+                              <div style={{display:'flex', justifyContent:'right'}}>
+                                    <Table  style={{ marginTop: '10rem', position: 'relative' }}>
+                                        <thead>
+                                            <tr>
+                                                <th  colSpan="4">PRICE</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {pessenger && pessenger.map((item, index) => {
+                                                return (
+                                                    <tr key={item.id}>
+                                                        <td>{item.name}</td>
+                                                        <td style={{ textAlign: 'left' }}>{this.numberWithCommas(item.price)} X</td>
+                                                        <td style={{ textAlign: 'left' }}>{item.count} =</td>
+                                                        <td style={{ minWidth: '200px', textAlign: 'right' }}>{this.numberWithCommas(item.price * item.count)}</td>
+                                                    </tr>
+                                                )
 
-
-                        })}
-
+                                            })}
+                                            <tr>
+                                                <td colSpan="3">รวม</td>
+                                                <td style={{textAlign:'right'}}>{this.numberWithCommas(this.state.sum)}</td>
+                                            </tr>
+                                        </tbody>
+                                    </Table>
+                                </div>
+                            </Col>
+                        </Row>
                     </CardBody>
                 </Card>
-                <Form>
+                
                     <Card >
                         <CardHeader>
                             <i className="fas fa-paperclip" />
@@ -158,6 +255,8 @@ class SecondPage extends Component {
                                 {' '}
                                 <Button
                                     color="danger"
+                                    type="submit"
+                                    disabled={submitting}
                                 >
                                     จองทัวร์นี้{' '}
                                     <i className="fas fa-arrow-right" />
@@ -165,7 +264,7 @@ class SecondPage extends Component {
                             </div>
                         </CardBody>
                     </Card>
-                </Form>
+                </form>
             </div>
         )
     }
@@ -179,16 +278,23 @@ SecondPage = reduxForm({
 
 // Decorate with connect to read form values
 const selector = formValueSelector('wizard')// <-- same as form name
+
 SecondPage = connect(
     state => {
         // can select values individually
         const period = selector(state, 'period')
+        mapStateToProps
 
         return {
-            period,
+            period
         }
     }
 )(SecondPage)
+ const mapStateToProps = (state, ownProps) => {
+     return {
+         createBooking: state.bookingReducers.createBooking
+     }
+ }
 
 export default SecondPage
 

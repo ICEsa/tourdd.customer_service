@@ -31,7 +31,7 @@ class _Collapse extends Component {
   render() {
     const {data} = this.props
        let PropertiesRender = [];
-        console.log(data)
+       
        {data && data.map(function(e){
          if(e.condition_value){
           PropertiesRender =[...PropertiesRender, 
