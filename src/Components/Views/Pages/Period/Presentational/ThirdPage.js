@@ -54,22 +54,22 @@ const Thirdpage = props => {
             </Row>
             <Row>
               <Col xs="4">
-                <span>รหัสการจอง TDD-60</span>
+                <span>รหัสการจอง TDD-{booking && booking.reference}</span>
               </Col>
               <Col xs="8">
-                <span>คุณ ชยากร แก้ววงศ์</span>{' '}
+                <span>คุณ {booking && booking.bookingCustomer}</span>{' '}
 
               </Col>
             </Row>
             <Row>
-              <Table Striped>
+              <Table >
                 <thead >
                   <tr>
-                    <th colSpan="2">รายการ</th>
+                    <th colSpan="4">รายการ</th>
                   </tr>
                 </thead>
                 <tbody>
-                    {booking.item && booking.map(e=>{
+                    {booking && booking.item && booking.item.map(e=>{
                       return <tr key={e.detail_id}>
                         <td>{e.detail_name}</td>
                         <td>{e.detail_count}</td>
