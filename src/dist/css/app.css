@@ -14,6 +14,14 @@
     color: #ffffff;
     background-color: transparent;
 }
+.modal-loading{
+    
+}
+.modal-loading > .modal-content{
+    background-color: transparent!important;
+    border:unset!important;
+    margin-top:25%
+}
 body{
     background: #e7e8ea!important;
 }

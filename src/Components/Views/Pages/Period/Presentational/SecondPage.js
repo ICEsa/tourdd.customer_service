@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import validate from '../validate'
+import config from '../../../../../config'
 import { formValues, FieldArray, Field, reduxForm, formValueSelector } from 'redux-form'
 import renderField from './Fields/renderField'
 import { connect } from 'react-redux'
@@ -8,6 +9,8 @@ import {createBooking} from '../../../../../redux/actions/bookingActions'
 const moment = require('moment');
 require("moment/min/locales.min");
 moment.locale('th');
+
+const COMPANY_ID = config.COMPANY_ID
 
 
 class SecondPage extends Component {
@@ -21,7 +24,7 @@ class SecondPage extends Component {
         }
         this.handleChange = this.handleChange.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
-        this.handleInitialize = this.handleInitialize.bind(this)
+      
     }
     periodFilter = (item) => {
         const { period } = this.props
@@ -54,21 +57,18 @@ class SecondPage extends Component {
     async sleep(ms){
         new Promise(resolve => setTimeout(resolve, ms))
     }
-    async handleInitialize(values){
-        new Promise(resolve => this.props.initialize(resolve, values))
-    }
-    prepareSubmit(event){
-        this.handleInitialize({...event,pessenger:this.state.sumary}).then(()=>{
-            
-        })
-    }
+   
+  
      onSubmit(event){
        let data = {
         ...event,
-        amount:this.state.sum
+        amount:this.state.sum,
+        company_id:COMPANY_ID
        }
        this.props.dispatch(createBooking(data)).then( ()=>{
-           
+           if(!this.props.bookingCreate.isRejected){
+               this.props.nextPage()
+           }
        })
 
 
@@ -96,7 +96,7 @@ class SecondPage extends Component {
                 })
             })
         }
-        await pessenger.map(e => {
+        pessenger &&  await pessenger.map(e => {
             return price = [...price, { price: e.condition_value, Count: 0 }]
         })
         this.setState({
@@ -105,7 +105,7 @@ class SecondPage extends Component {
         })
     }
     render() {
-        const { data, period, handleSubmit, submitting} = this.props
+        const { data, period, handleSubmit, submitting,} = this.props
         const { pessenger, price } = this.state
         return (
             <div>
@@ -127,13 +127,13 @@ class SecondPage extends Component {
                                             return array = ee;
                                         }
                                     })
-                                    pessenger.map((item, index) => {
+                                    pessenger && pessenger.map((item, index) => {
                                         return condition = [...condition,
                                         <Row key={item.id}>
                                         <Col xs="auto">
                                             <Field
                                                 key={item.id}
-                                                name={item.name.trim()}
+                                                name={`${item.name}|${item.price}`}
                                                 type="number"
                                                 onChange={this.handleChange(index)}
                                                 component={renderField}
@@ -279,24 +279,20 @@ SecondPage = reduxForm({
 // Decorate with connect to read form values
 const selector = formValueSelector('wizard')// <-- same as form name
 
-SecondPage = connect(
-    state => {
-        // can select values individually
-        const period = selector(state, 'period')
-        mapStateToProps
-
-        return {
-            period
-        }
-    }
-)(SecondPage)
+// SecondPage = connect(
+//     (state => {
+//         // can select values individually
+//         selector(state, 'period')
+//     }
+// ),mapStateToProps)(SecondPage)
  const mapStateToProps = (state, ownProps) => {
      return {
-         createBooking: state.bookingReducers.createBooking
+        period: (selector( state, 'period')),
+        bookingCreate: state.bookingReducers.bookingCreate
      }
  }
 
-export default SecondPage
+export default connect(mapStateToProps)(SecondPage)
 
 // SelectingFormValuesForm = reduxForm({
 //     form: 'selectingFormValues'  // a unique identifier for this form
