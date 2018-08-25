@@ -11,6 +11,10 @@ const moment = require('moment');
 require("moment/min/locales.min");
 moment.locale('th');
 
+function numberWithCommas (x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 
 const Thirdpage = props => {
   if(props.booking.isLoading){
@@ -61,27 +65,33 @@ const Thirdpage = props => {
 
               </Col>
             </Row>
-            <Row>
-              <Table >
+            <Row className="justify-content-md-center">
+              <Col xs="10">
+              <Table bordered>
                 <thead >
                   <tr>
-                    <th colSpan="4">รายการ</th>
+                    <th className="text-align-center">รายการ</th>
+                    <th className="text-align-right">จำนวน</th>
+                    <th className="text-align-right">ราคาต่อหน่วย</th>
+                    <th className="text-align-right">รวม</th>
                   </tr>
                 </thead>
                 <tbody>
                     {booking && booking.item && booking.item.map(e=>{
                       return <tr key={e.detail_id}>
-                        <td>{e.detail_name}</td>
-                        <td>{e.detail_count}</td>
-                        <td>{e.detail_price}</td>
-                        <td>{e.detail_sum}</td>
+                        <td className="text-align-center">{e.detail_name}</td>
+                        <td className="text-align-right">{numberWithCommas(parseInt(e.detail_count))}</td>
+                        <td className="text-align-right">{numberWithCommas(parseInt(e.detail_price))} บาท</td>
+                        <td className="text-align-right">{numberWithCommas(parseInt(e.sum))} บาท</td>
                       </tr>
                     })}
                   <tr>
-                    <td colSpan="5">{booking.amount}</td>
+                    <td colSpan="3" className="text-align-left">รวม</td>  
+                    <td className="text-align-right">{booking.amount} บาท</td>
                   </tr>
                 </tbody>
               </Table>
+              </Col>
             </Row>
           </Container>
         </Card>
